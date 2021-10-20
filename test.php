@@ -1,5 +1,9 @@
 <?php
 include("connect.php");
+// $id = '';
+// $PackVolt = '';
+// $PackCurrent = '';
+// $Temperature = '';
 
 function getData()
 {
@@ -45,24 +49,24 @@ if (isset($_POST['insert'])) {
 
             <div class="form-group">
                 <label for="usr">ID:</label>
-                <input type="text" class="form-control" id="id" name="id">
+                <input type="text" class="form-control" id="id" name="id" value="<?php echo $id ?>">
             </div>
 
             <div class="form-group">
                 <label for="usr">PackVolt:</label>
-                <input type="text" class="form-control" id="PackVolt" name="PackVolt">
+                <input type="text" class="form-control" id="PackVolt" name="PackVolt" value="<?php echo $PackVolt ?>">
             </div>
 
 
             <div class="form-group">
                 <label for="usr">PackCurrent:</label>
-                <input type="text" class="form-control" id="PackCurrent" name="PackCurrent">
+                <input type="text" class="form-control" id="PackCurrent" name="PackCurrent" value="<?php echo $PackCurrent ?>">
             </div>
 
 
             <div class="form-group">
                 <label for="usr">Temperature:</label>
-                <input type="text" class="form-control" id="Temperature" name="Temperature">
+                <input type="text" class="form-control" id="Temperature" name="Temperature" value="<?php echo $Temperature ?>">
             </div>
 
 
@@ -105,18 +109,29 @@ if (isset($_POST['insert'])) {
     </div>
     <?php
     if (isset($_GET['edit'])) {
-        include("edit.php");
+        $edit_id = $_GET['edit'];
+
+        $sql = "SELECT * FROM testTable WHERE id='$edit_id'";
+        $result = sqlsrv_query($conn, $sql) or die("Query error : " . sqlsrv_errors($result));
+
+        $data = sqlsrv_fetch_array($result);
+
+        $id = $data['ID'];
+        $PackVolt = $data['PackVolt'];
+        $PackCurrent = $data['PackCurrent'];
+        $Temperature = $data['Temperature'];
     }
     ?>
 
     <?php
     if (isset($_GET['delete'])) {
         $delete_id = $_GET['delete'];
-        $delete = "DELETE FROM testTable WHERE id='$delete_id'";
+        $sql = "DELETE FROM testTable WHERE id='$delete_id'";
         $result = sqlsrv_query($conn, $sql) or die("Query error : " . sqlsrv_errors($result));
-        if ($result) {
-            echo "";
-        }
+        // if ($result) {
+        //     echo "";
+        // }
+        header("location: test.php");
     }
     ?>
 </body>
