@@ -16,3 +16,4 @@ if (isset($_GET['delete'])) {
     $sql = "SELECT * FROM testTable WHERE id='$id'";
     $result = sqlsrv_query($conn, $sql) or die("Query error : " . sqlsrv_errors($result));
 }
+XXXXX

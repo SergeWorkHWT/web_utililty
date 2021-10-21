@@ -1,10 +1,10 @@
 <?php
 include("connect.php");
-// $id = '';
-// $PackVolt = '';
-// $PackCurrent = '';
-// $Temperature = '';
-
+$id = '';
+$PackVolt = '';
+$PackCurrent = '';
+$Temperature = '';
+$update = false;
 function getData()
 {
     $data = array();
@@ -22,6 +22,39 @@ if (isset($_POST['insert'])) {
     $result = sqlsrv_query($conn, $sql);
 } else {
     echo "Insert Fail";
+}
+
+
+if (isset($_GET['edit'])) {
+    $edit_id = $_GET['edit'];
+
+    $sql = "SELECT * FROM testTable WHERE id='$edit_id'";
+    $result = sqlsrv_query($conn, $sql) or die("Query error : " . sqlsrv_errors($result));
+
+    $data = sqlsrv_fetch_array($result);
+
+    $id = $data['ID'];
+    $PackVolt = $data['PackVolt'];
+    $PackCurrent = $data['PackCurrent'];
+    $Temperature = $data['Temperature'];
+    $update = true;
+}
+
+if (isset($_POST['update'])) {
+    $id = $_POST['update'];
+
+    $id = $_POST['id'];
+    $PackVolt = $_POST['PackVolt'];
+    $PackCurrent = $_POST['PackCurrent'];
+    $Temperature = $_POST['Temperature'];
+    $sql = "UPDATE testTable SET PackVolt='$PackVolt',PackCurrent='$PackCurrent',Temperature='$Temperature'WHERE id='$id'";
+
+    $result = sqlsrv_query($conn, $sql) or die("Query error : " . sqlsrv_errors($result));
+    $id = '';
+    $PackVolt = '';
+    $PackCurrent = '';
+    $Temperature = '';
+    header('test.php');
 }
 ?>
 <!DOCTYPE html>
@@ -69,8 +102,13 @@ if (isset($_POST['insert'])) {
                 <input type="text" class="form-control" id="Temperature" name="Temperature" value="<?php echo $Temperature ?>">
             </div>
 
-
-            <button type="submit" class="btn btn-primary" name="insert">insert</button>
+            <?php
+            if ($update == true) :
+            ?>
+                <button type="submit" class="btn btn-info" name="update">Update</button>
+            <?php else : ?>
+                <button type="submit" class="btn btn-primary" name="insert">insert</button>
+            <?php endif; ?>
         </form>
     </div>
     <div class="container">
@@ -107,21 +145,6 @@ if (isset($_POST['insert'])) {
             </table>
         </div>
     </div>
-    <?php
-    if (isset($_GET['edit'])) {
-        $edit_id = $_GET['edit'];
-
-        $sql = "SELECT * FROM testTable WHERE id='$edit_id'";
-        $result = sqlsrv_query($conn, $sql) or die("Query error : " . sqlsrv_errors($result));
-
-        $data = sqlsrv_fetch_array($result);
-
-        $id = $data['ID'];
-        $PackVolt = $data['PackVolt'];
-        $PackCurrent = $data['PackCurrent'];
-        $Temperature = $data['Temperature'];
-    }
-    ?>
 
     <?php
     if (isset($_GET['delete'])) {
