@@ -1,6 +1,7 @@
 <?php
+ob_start(); // open cache
 include("connect.php");
-$id = '';
+$id = 0;
 $PackVolt = '';
 $PackCurrent = '';
 $Temperature = '';
@@ -8,16 +9,15 @@ $update = false;
 function getData()
 {
     $data = array();
-    $data[1] = $_POST['id'];
-    $data[2] = $_POST['PackVolt'];
-    $data[3] = $_POST['PackCurrent'];
-    $data[4] = $_POST['Temperature'];
+    $data[1] = $_POST['PackVolt'];
+    $data[2] = $_POST['PackCurrent'];
+    $data[3] = $_POST['Temperature'];
     return $data;
 }
 if (isset($_POST['insert'])) {
     $info = getData();
-    $sql = "INSERT INTO [testTable] ([ID],[PackVolt],[PackCurrent],[Temperature]) 
-    VALUES('$info[1]','$info[2]','$info[3]','$info[4]')";
+    $sql = "INSERT INTO [testTable] ([PackVolt],[PackCurrent],[Temperature]) 
+    VALUES('$info[1]','$info[2]','$info[3]')";
     // $params = array(1, "A");  sqlsrv_query supposed have $params but it works
     $result = sqlsrv_query($conn, $sql);
 } else {
@@ -81,8 +81,7 @@ if (isset($_POST['update'])) {
 
 
             <div class="form-group">
-                <label for="usr">ID:</label>
-                <input type="text" class="form-control" id="id" name="id" value="<?php echo $id ?>">
+                <input type="hidden" name="id" value="<?php echo $id ?>">
             </div>
 
             <div class="form-group">
@@ -154,7 +153,8 @@ if (isset($_POST['update'])) {
         // if ($result) {
         //     echo "";
         // }
-        header("location: test.php");
+        header("location:test.php");
+        ob_end_flush();
     }
     ?>
 </body>
