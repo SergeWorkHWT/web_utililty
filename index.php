@@ -24,7 +24,6 @@ if (isset($_POST['insert'])) {
     echo "Insert Fail";
 }
 
-
 if (isset($_GET['edit'])) {
     $edit_id = $_GET['edit'];
 
@@ -54,7 +53,7 @@ if (isset($_POST['update'])) {
     $PackVolt = '';
     $PackCurrent = '';
     $Temperature = '';
-    header('test.php');
+    header('index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -77,7 +76,7 @@ if (isset($_POST['update'])) {
     </div>
 
     <div class="row justify-content-center">
-        <form method="POST" action="test.php">
+        <form method="POST" action="index.php">
 
 
             <div class="form-group">
@@ -137,8 +136,8 @@ if (isset($_POST['update'])) {
                         <td><?php echo $PackVolt; ?></td>
                         <td><?php echo $PackCurrent; ?></td>
                         <td><?php echo $Temperature; ?></td>
-                        <td><a href="test.php?edit=<?php echo $id; ?>" class="btn btn-info">edit</a></td>
-                        <td><a href="test.php?delete=<?php echo $id; ?>" class="btn btn-danger">delete</a></td>
+                        <td><a href="index.php?edit=<?php echo $id; ?>" class="btn btn-info">edit</a></td>
+                        <td><a href="index.php?delete=<?php echo $id; ?>" class="btn btn-danger">delete</a></td>
                     </tr>
                 <?php } ?>
             </table>
@@ -153,7 +152,7 @@ if (isset($_POST['update'])) {
         // if ($result) {
         //     echo "";
         // }
-        header("location:test.php");
+        header("location:index.php");
         ob_end_flush();
     }
     ?>
